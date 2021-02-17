@@ -1,0 +1,93 @@
+JS: 
+$.fn.isVisible = function() {
+	var rect = this[0].getBoundingClientRect();
+	return (
+		(rect.height > 0 || rect.width > 0) &&
+		rect.bottom >= 0 &&
+		rect.right >= 0 &&
+		rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+		);
+};
+
+
+// LOAD NUMBERS
+var loadAnimateNumber = true;
+function animateNumbers(){
+	
+	if ($('#rotate-div').isVisible()) {
+		if (loadAnimateNumber) {
+			loadAnimateNumber = false;
+			$('.animate-number').each(function () {
+				$(this).prop('Counter',0).animate({
+					Counter: $(this).data('value')
+				}, {
+					duration: 1500,
+					easing: 'swing',
+					step: function (now) {
+						$(this).text(Math.ceil(now));
+					}
+				});
+			});
+		};
+	}
+}
+
+$(window)
+.on('scroll', function () {
+	animateNumbers();
+});
+
+$(window)
+.on('load', function () {
+	animateNumbers();
+});
+
+
+
+
+HTML / php  : 
+
+<!-- ANIMATE NUMBERS -->
+<?php 
+$ntmy_animate_numbers_numbers = get_sub_field('ntmy_animate_numbers_numbers');
+?>
+
+
+
+<section>
+	<div class="small-12 columns medium-12 large-12 columns">
+		<div class="detail-quality">
+			<div id="rotate-div" class="inner-detail-quality wow fadeInRight">
+				<div  class="block-inn">
+					<?php
+					$i= 0;
+					foreach ($ntmy_animate_numbers_numbers as $ntmy_animate_numbers_numbers_value) {	
+						$ntmy_animate_numbers_numbers_content = $ntmy_animate_numbers_numbers_value['ntmy_animate_numbers_numbers_content'];
+						$ntmy_animate_numbers_numbers_number = $ntmy_animate_numbers_numbers_value['ntmy_animate_numbers_numbers_number'];
+						$ntmy_animate_numbers_numbers_value = $ntmy_animate_numbers_numbers_value['ntmy_animate_numbers_numbers_value'];	
+						?>
+						<div class="item item-<?php echo $i ?>">
+							<span class="count animate-number" data-value="<?php echo $ntmy_animate_numbers_numbers_number ?>">
+								100
+							</span>
+							<span class="desc">
+								<?php if ($ntmy_animate_numbers_numbers_value){ ?>
+									<?php echo $ntmy_animate_numbers_numbers_value; ?>
+								<?php } ?>
+								<br>
+								<?php if ($ntmy_animate_numbers_numbers_content){ ?>
+									<?php echo $ntmy_animate_numbers_numbers_content; ?>
+								<?php } ?> 
+							</span>
+						</div>
+						<?php
+						$i++; 
+					} ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
